@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Document, Schema, model } from "mongoose";
 import { v4 as uuidv4 } from "uuid";
 import { ProjectType } from "./project";
 
@@ -29,6 +29,7 @@ const projectSchema = new Schema<ProjectType>({
         enum: ["admin", "member"],
         default: "member",
       },
+      _id: false,
     },
   ],
   startDate: {
@@ -63,7 +64,7 @@ export class Project {
     startDate,
     users,
     description = "",
-  }: ProjectType) {
+  }: Omit<ProjectType, keyof Document | "status" | "createdAt">) {
     return await this.model.create({
       name,
       endDate,
